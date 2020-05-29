@@ -7,6 +7,7 @@ dotenv.config()
 import cors from "cors"
 import  connectMongoose  from "./db/mongooseConnection"
 import { UserModel } from "./model"
+import {authRouter} from './route'
 
 server.use(cors());
 server.use(passport.initialize())
@@ -14,6 +15,8 @@ server.use(express.json())
 
 
 const PORT = process.env.PORT || 5500
+
+server.use("/api/auth",authRouter)
 
 server.get("/test", (req,res)=>{
 res.send("Hello")
