@@ -1,14 +1,16 @@
 import express from "express"
 const server = express()
 import listEndPoints from "express-list-endpoints"
+import passport from 'passport'
 import dotenv from "dotenv"
 dotenv.config()
-server.use(express.json())
 import cors from "cors"
 import  connectMongoose  from "./db/mongooseConnection"
 import { UserModel } from "./model"
 
 server.use(cors());
+server.use(passport.initialize())
+server.use(express.json())
 
 
 const PORT = process.env.PORT || 5500
