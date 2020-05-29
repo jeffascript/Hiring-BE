@@ -59,7 +59,7 @@ const userSchema = new mongoose.Schema(
 );
 
 const options = {
-  usernameField: "email",
+  usernameQueryFields: ["email"],
 };
 
 userSchema.plugin(passportLocalMongoose, options);

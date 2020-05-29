@@ -2,6 +2,7 @@ import express from "express"
 const server = express()
 import listEndPoints from "express-list-endpoints"
 import passport from 'passport'
+import  './utils/authUtils'
 import dotenv from "dotenv"
 dotenv.config()
 import cors from "cors"
@@ -23,7 +24,7 @@ res.send("Hello")
 })
 
 
-server.get("/test1", async(req,res)=>{
+server.get("/test1",passport.authenticate('jwt'), async(req,res)=>{
     const users =  await UserModel.find({})
      res.send(users)
      })

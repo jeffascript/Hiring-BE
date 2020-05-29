@@ -18,11 +18,11 @@ router.post("/register", async (req, res) => {
                 return res.status(500).json({ type: 'EMAIL_EXIST', message: 'email is already taken' });
 
         const user = await UserModel.register(req.body, req.body.password)
-        const username = user.username
+        const token = generateToken(user)
         let subject = "DEV-HANTER Account Verification Token"
         let to = user.email
         let from = process.env.FROM_EMAIL
-        let link = `${req.protocol}://${req.headers.host}/api/auth/verify?token=${username}`
+        let link = `${process.env.FRONT_BASE_URL}/verify?token=${token}`
         let html = signUpTemplate(user.surname,link )
 
         await sendEmail({
@@ -77,10 +77,10 @@ router.post("/refreshtoken", passport.authenticate('jwt'), async (req, res) => {
     }
 })
 
-router.get('/verify', async (req, res) => {
+router.get('/verify',passport.authenticate('jwt'), async (req, res) => {
     try {
         const userProfile = await UserModel.findOneAndUpdate({
-            username: req.query.token
+            username: req.user.username
         }, {
             $set: {
                 isVerified: true
@@ -88,8 +88,8 @@ router.get('/verify', async (req, res) => {
         }, {
             new: true
         });
-
-        res.redirect(`${process.env.FRONT_BASE_URL}/`)
+        
+        res.status(200).send({success:true,message:'email verified'})
     } catch (error) {
         res.status(500).send(error.message)
     }
