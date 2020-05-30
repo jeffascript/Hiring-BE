@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema(
     },
     surname: {
       type: String,
+      required:true
     },
     email: {
       type: String,
@@ -58,7 +59,7 @@ const userSchema = new mongoose.Schema(
 );
 
 const options = {
-  usernameField: "email",
+  usernameQueryFields: ["email"],
 };
 
 userSchema.plugin(passportLocalMongoose, options);
