@@ -103,7 +103,7 @@ router.get('/linkedin/callback',
    async (req, res) => {
     // Successful authentication, redirect login.
     const token = generateToken(req.user)
-    res.redirect(`${process.env.FRONT_BASE_URL}/verify?token=${token}`);
+    res.redirect(`${process.env.FRONT_BASE_URL}/register?token=${token}`);
   });
 
 export default router
