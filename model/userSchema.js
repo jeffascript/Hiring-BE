@@ -52,6 +52,7 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    linkedinId:String
   },
   {
     timestamps: true,

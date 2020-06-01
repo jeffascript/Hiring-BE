@@ -1,6 +1,7 @@
 import passport from "passport";
 import {Strategy as LocalStrategy} from 'passport-local'
 import {Strategy as JwtStrategy, ExtractJwt} from 'passport-jwt';
+import {Strategy as LinkedInStrategy} from 'passport-linkedin-oauth2'
 import {UserModel} from '../model';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -28,3 +29,19 @@ passport.use(new JwtStrategy({jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerT
         else return next(null, false)
     })
 }))
+
+/** 
+ * 
+ * Linkedin strategy
+ * 
+*/
+
+passport.use(new LinkedInStrategy({
+    clientID: process.env.LINKEDIN_KEY,
+    clientSecret: process.env.LINKEDIN_SECRET,
+    callbackURL: "http://localhost:5500/api/auth/linkedin/callback",
+    scope: ['r_emailaddress', 'r_basicprofile'],
+  }, (accessToken, refreshToken, profile, done) => {
+      console.log(profile)
+   
+  }));

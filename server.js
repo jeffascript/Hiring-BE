@@ -9,6 +9,7 @@ import cors from "cors"
 import  connectMongoose  from "./db/mongooseConnection"
 import { UserModel } from "./model"
 import {authRouter} from './route'
+import {onlyAdmin, onlyDeveloper} from './middleware'
 
 server.use(cors());
 server.use(passport.initialize())
@@ -24,7 +25,7 @@ res.send("Hello")
 })
 
 
-server.get("/test1",passport.authenticate('jwt'), async(req,res)=>{
+server.get("/test1",onlyDeveloper,passport.authenticate('jwt'), async(req,res)=>{
     const users =  await UserModel.find({})
      res.send(users)
      })
