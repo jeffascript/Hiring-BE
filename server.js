@@ -7,8 +7,7 @@ import dotenv from "dotenv"
 dotenv.config()
 import cors from "cors"
 import  connectMongoose  from "./db/mongooseConnection"
-import { UserModel } from "./model"
-import {authRouter} from './route'
+import {authRouter,userRouter} from './route'
 
 server.use(cors());
 server.use(passport.initialize())
@@ -18,16 +17,7 @@ server.use(express.json())
 const PORT = process.env.PORT || 5500
 
 server.use("/api/auth",authRouter)
-
-server.get("/test", (req,res)=>{
-res.send("Hello")
-})
-
-
-server.get("/test1",passport.authenticate('jwt'), async(req,res)=>{
-    const users =  await UserModel.find({})
-     res.send(users)
-     })
+server.use("/api/user",userRouter)
 
 
 console.log(listEndPoints(server))

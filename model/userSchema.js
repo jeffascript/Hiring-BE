@@ -52,6 +52,8 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    linkedinId:String,
+    image: String
   },
   {
     timestamps: true,

@@ -95,4 +95,15 @@ router.get('/verify',passport.authenticate('jwt'), async (req, res) => {
     }
 });
 
+router.get('/linkedin',
+  passport.authenticate('linkedin'));
+
+router.get('/linkedin/callback', 
+  passport.authenticate('linkedin', { failureRedirect: `${process.env.FRONT_BASE_URL}/login` }),
+   async (req, res) => {
+    // Successful authentication, redirect login.
+    const token = generateToken(req.user)
+    res.redirect(`${process.env.FRONT_BASE_URL}/register?token=${token}`);
+  });
+
 export default router
