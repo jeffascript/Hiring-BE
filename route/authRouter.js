@@ -111,7 +111,7 @@ router.get('/linkedin/callback',
   passport.authenticate('github', { scope: [ 'user' ] }));
 
 router.get('/github/callback', 
-  passport.authenticate('github', { failureRedirect: '/login' }),
+  passport.authenticate('github', { failureRedirect:`${process.env.FRONT_BASE_URL}/login` }),
   function(req, res) {
     // Successful authentication, redirect home.
     const token = generateToken(req.user)
