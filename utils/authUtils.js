@@ -79,7 +79,7 @@ passport.use(new GitHubStrategy({
 }, async (accessToken, refreshToken, profile, done) => {
     try {
 
-        const userFromGithub = await UserModel.findOne({ email: profile.emails[0].value, GithubId: profile.id }) || {}
+        const userFromGithub = await UserModel.findOne({ email: profile.emails[0].value.trim(), GithubId: profile.id }) || {}
         if (!Object.keys(userFromGithub).length) {
             const createUserProfile = await UserModel.create({
                 username: profile.username,
