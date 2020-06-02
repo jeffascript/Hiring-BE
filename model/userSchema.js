@@ -15,7 +15,6 @@ const userSchema = new mongoose.Schema(
     },
     surname: {
       type: String,
-      required:true
     },
     email: {
       type: String,
@@ -53,7 +52,8 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
     linkedinId:String,
-    image: String
+    image: String,
+    githubId:String
   },
   {
     timestamps: true,

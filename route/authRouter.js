@@ -106,4 +106,16 @@ router.get('/linkedin/callback',
     res.redirect(`${process.env.FRONT_BASE_URL}/register?token=${token}`);
   });
 
+
+  router.get('/github',
+  passport.authenticate('github', { scope: [ 'user' ] }));
+
+router.get('/github/callback', 
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    const token = generateToken(req.user)
+    res.redirect(`${process.env.FRONT_BASE_URL}/register?token=${token}`);
+  });
+
 export default router
