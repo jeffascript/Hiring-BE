@@ -16,7 +16,7 @@ router.get("/:username",passport.authenticate('jwt'), async (req, res) => {
     }
 })
 
-router.get("/",onlyAdmin,passport.authenticate('jwt'), async (req, res) => {
+router.get("/",passport.authenticate('jwt'),onlyAdmin, async (req, res) => {
     try {
         const users = await UserModel.find({})
         res.send(users)
