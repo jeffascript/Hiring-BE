@@ -53,7 +53,8 @@ const userSchema = new mongoose.Schema(
     },
     linkedinId:String,
     image: String,
-    githubId:String
+    githubId:String,
+    refreshtoken:String,
   },
   {
     timestamps: true,

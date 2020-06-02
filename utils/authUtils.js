@@ -62,7 +62,7 @@ passport.use(new LinkedInStrategy({
         return done(null, userFromLinkedin)
 
     } catch (error) {
-        return done(error) 
+        return done(error)
     }
 
 }));
@@ -78,11 +78,11 @@ passport.use(new GitHubStrategy({
     callbackURL: "http://localhost:5500/api/auth/github/callback"
 }, async (accessToken, refreshToken, profile, done) => {
     try {
-        console.log(profile)
+
         const userFromGithub = await UserModel.findOne({ email: profile.emails[0].value, GithubId: profile.id }) || {}
         if (!Object.keys(userFromGithub).length) {
             const createUserProfile = await UserModel.create({
-                username:profile.username,
+                username: profile.username,
                 GithubId: profile.id,
                 firstname: profile._json.name.split(" ")[0] || '',
                 surname: profile._json.name.split(" ")[1] || '',
@@ -90,8 +90,8 @@ passport.use(new GitHubStrategy({
                 email: profile.emails[0].value,
                 isVerified: true,
                 refreshtoken: refreshToken,
-                github:profile.profileUrl,
-                location:profile._json.location
+                github: profile.profileUrl,
+                location: profile._json.location
             })
 
             return done(null, createUserProfile)
@@ -99,7 +99,7 @@ passport.use(new GitHubStrategy({
         return done(null, userFromLinkedin)
 
     } catch (error) {
-        return done(error) 
+        return done(error)
     }
 
 }));
