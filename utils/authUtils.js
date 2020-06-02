@@ -2,6 +2,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from 'passport-local'
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { Strategy as LinkedInStrategy } from 'passport-linkedin-oauth2'
+import GitHubStrategy from 'passport-github2'
 import { UserModel } from '../model';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -61,7 +62,44 @@ passport.use(new LinkedInStrategy({
         return done(null, userFromLinkedin)
 
     } catch (error) {
-        return done(error) 
+        return done(error)
+    }
+
+}));
+
+/** 
+ * 
+ * github strategy
+ * 
+*/
+passport.use(new GitHubStrategy({
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: "http://localhost:5500/api/auth/github/callback"
+}, async (accessToken, refreshToken, profile, done) => {
+    try {
+
+        const userFromGithub = await UserModel.findOne({ email: profile.emails[0].value, GithubId: profile.id }) || {}
+        if (!Object.keys(userFromGithub).length) {
+            const createUserProfile = await UserModel.create({
+                username: profile.username,
+                GithubId: profile.id,
+                firstname: profile._json.name.split(" ")[0] || '',
+                surname: profile._json.name.split(" ")[1] || '',
+                image: profile.photos[0].value,
+                email: profile.emails[0].value,
+                isVerified: true,
+                refreshtoken: refreshToken,
+                github: profile.profileUrl,
+                location: profile._json.location
+            })
+
+            return done(null, createUserProfile)
+        }
+        return done(null, userFromLinkedin)
+
+    } catch (error) {
+        return done(error)
     }
 
 }));
