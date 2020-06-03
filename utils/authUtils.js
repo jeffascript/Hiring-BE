@@ -2,6 +2,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from 'passport-local'
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { Strategy as LinkedInStrategy } from 'passport-linkedin-oauth2'
+import {isEmpty} from 'lodash'
 import GitHubStrategy from 'passport-github2'
 import { UserModel } from '../model';
 import dotenv from 'dotenv';
@@ -44,8 +45,8 @@ passport.use(new LinkedInStrategy({
     scope: ['r_emailaddress', 'r_liteprofile'],
 }, async (accessToken, refreshToken, profile, done) => {
     try {
-        const userFromLinkedin = await UserModel.findOne({ email: profile.emails[0].value, linkedinId: profile.id }) || {}
-        if (!Object.keys(userFromLinkedin).length) {
+        const userFromLinkedin = await UserModel.findOne({ email: profile.emails[0].value, linkedinId: profile.id })
+        if (isEmpty(userFromLinkedin)) {
             const createUserProfile = await UserModel.create({
                 username: `${profile.name.givenName}.${profile.name.familyName}`,
                 linkedinId: profile.id,
@@ -78,12 +79,11 @@ passport.use(new GitHubStrategy({
     callbackURL: "http://localhost:5500/api/auth/github/callback"
 }, async (accessToken, refreshToken, profile, done) => {
     try {
-
-        const userFromGithub = await UserModel.findOne({ email: profile.emails[0].value, GithubId: profile.id }) || {}
-        if (!Object.keys(userFromGithub).length) {
+        const userFromGithub = await UserModel.findOne({ email:profile.emails[0].value.trim(),githubId:profile.id.trim() })
+        if (isEmpty(userFromGithub)) {
             const createUserProfile = await UserModel.create({
                 username: profile.username,
-                GithubId: profile.id,
+                githubId: profile.id,
                 firstname: profile._json.name.split(" ")[0] || '',
                 surname: profile._json.name.split(" ")[1] || '',
                 image: profile.photos[0].value,
@@ -96,7 +96,7 @@ passport.use(new GitHubStrategy({
 
             return done(null, createUserProfile)
         }
-        return done(null, userFromLinkedin)
+        return done(null, userFromGithub)
 
     } catch (error) {
         return done(error)
