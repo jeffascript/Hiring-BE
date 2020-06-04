@@ -1,6 +1,6 @@
 import mongoose from "mongoose"
 
-
+ 
 
 const attemptedBy = mongoose.Schema({
     userId: {
@@ -17,6 +17,24 @@ const attemptedBy = mongoose.Schema({
     }
 
 })
+
+
+
+const geoSchema = mongoose.Schema({
+    type: {
+        type: String,
+        default: 'Point'
+        
+        
+        
+    },
+    coordinates: {
+        type: [Number],
+        index: '2dsphere'
+    }
+  });
+
+
 
 const taskSchema = new mongoose.Schema({
 
@@ -51,23 +69,18 @@ const taskSchema = new mongoose.Schema({
         max: { type: Number, min: 0 }
         
     },
-    location: {
-        type: { 
-            type: String,
-            enum: ['Point'],
-            default:'Point'  
-        },
-        coordinates: []
-       },
+    geometry: geoSchema,
 
     timeFrame: Number,
+
 
     attemptedBy: [attemptedBy],
 
     taskIsOpen: {
         type: Boolean,
         default: true
-    }
+    },
+    city: String
 
 
     
@@ -75,7 +88,7 @@ const taskSchema = new mongoose.Schema({
 },{ timestamps: true})
 
 
-taskSchema.index({ location: "2dsphere" })
+//  taskSchema.index({ geometry: "2dsphere" })
 
 const taskCollection = "tasks"
 
