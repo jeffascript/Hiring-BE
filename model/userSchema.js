@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import { isEmail } from "validator";
 import passportLocalMongoose from "passport-local-mongoose";
+
 
 const selectedTasks = new mongoose.Schema({
 
@@ -12,18 +13,23 @@ const selectedTasks = new mongoose.Schema({
     type: Date
   },
 
-  isTaskCompleted: {
+
+  isTaskCompleted:{
+
     type: Boolean,
     default: false
   },
 
-  submittedOnTime: {
+  submittedOnTime:{
     type: Boolean
+  
   }
-
-
-
+                                      
 }, { timestamps: true })
+
+
+
+
 
 
 const userSchema = new mongoose.Schema(
@@ -45,7 +51,7 @@ const userSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      required: true,
+      // required: true,
       trim: true,
       lowercase: true,
       unique: true,
@@ -61,6 +67,8 @@ const userSchema = new mongoose.Schema(
       enum: ["company", "developer", "admin"],
       trim: true
     },
+
+    selectedTasks: [selectedTasks],
 
     location: {
       type: String,
