@@ -19,7 +19,7 @@ router.post("/register", async (req, res) => {
 
         const user = await UserModel.register(req.body, req.body.password)
         const token = generateToken(user)
-        let subject = "DEV-HANTER Account Verification Token"
+        let subject = "DEV-HUNTER Account Verification Token"
         let to = user.email
         let from = process.env.FROM_EMAIL
         let link = `${process.env.FRONT_BASE_URL}/verify?token=${token}`
@@ -60,6 +60,7 @@ router.post("/login", verifyEmail, passport.authenticate('local'), async (req, r
             userInfo: curentUser 
         })
     } catch (error) {
+        console.log(error)
         res.status(500).send(error.message)
     }
 })

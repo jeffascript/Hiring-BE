@@ -1,6 +1,33 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import { isEmail } from "validator";
 import passportLocalMongoose from "passport-local-mongoose";
+
+
+const selectedTasks = new mongoose.Schema({
+
+  taskId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "tasks"
+  },
+  deadline: {
+    type: Date
+  },
+
+  isTaskCompleted:{
+    type: Boolean,
+    default: false
+  },
+
+  submittedOnTime:{
+    type: Boolean
+    // default: false
+  }
+
+
+
+})
+
+
 
 const userSchema = new mongoose.Schema(
   {
@@ -37,6 +64,8 @@ const userSchema = new mongoose.Schema(
       enum: ["company", "developer", "admin"],
       trim:true
     },
+
+    selectedTasks: [selectedTasks],
 
     location: {
       type: String,

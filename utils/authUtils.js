@@ -19,7 +19,9 @@ passport.deserializeUser(UserModel.deserializeUser())
  * Local stratedy
 */
 
-passport.use(new LocalStrategy(UserModel.authenticate()))
+// passport.use(UserModel.createStrategy()) // This should be the right one since  we are using another entry point divergent from username
+
+passport.use(new LocalStrategy(UserModel.authenticate())) 
 
 /**
  * Jwt strategy

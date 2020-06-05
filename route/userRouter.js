@@ -16,7 +16,9 @@ router.get("/:username",passport.authenticate('jwt'), async (req, res) => {
     }
 })
 
+
 router.get("/",passport.authenticate('jwt'),onlyAdmin, async (req, res) => {
+
     try {
         const users = await UserModel.find({})
         res.send(users)
@@ -49,7 +51,7 @@ router.delete('/:username', passport.authenticate('jwt'), async (req, res) => {
        await user.findOneAndDelete({ username: req.user.username }, { new: true });
         res.send('deleted')
     } catch (error) {
-        res.status(500).send(error)
+        res.status(500).send(error) 
     }
 });
 

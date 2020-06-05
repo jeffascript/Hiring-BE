@@ -7,7 +7,7 @@ import dotenv from "dotenv"
 dotenv.config()
 import cors from "cors"
 import  connectMongoose  from "./db/mongooseConnection"
-import {authRouter,userRouter} from './route'
+import { authRouter,userRouter,taskRouter } from './route'
 
 server.use(cors());
 server.use(passport.initialize())
@@ -18,6 +18,7 @@ const PORT = process.env.PORT || 5500
 
 server.use("/api/auth",authRouter)
 server.use("/api/user",userRouter)
+server.use("/api/task", taskRouter)
 
 
 console.log(listEndPoints(server))
@@ -28,18 +29,15 @@ server.listen(PORT, ()=>{
 })
 
 
+// import { getCity } from "./middleware"
 
 
-/*
+// const callT = async()=>{
+   
+//     console.log(await getCity(53.550341,10.000654))
+// }
 
-import axios from "axios"
 
-const city= "berlin"
-axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${city}&key=${process.env.GEO_KEY}`)
-  .then(response => {
-    console.log(response.data.results[0].geometry);
-  }).catch(error => {
-    console.log(error);
-  });
 
-  */
+
+// callT()
