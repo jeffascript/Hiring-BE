@@ -5,22 +5,21 @@ import mongoose from "mongoose"
 const attemptedBy = mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref:"users",
+        ref: "users",
 
     },
 
     repo: String,
-    
+
     deliveryTime: {
         type: Date
-        // default: Date.now
     }
 
 })
 
 const taskSchema = new mongoose.Schema({
 
-    taskTitle:{
+    taskTitle: {
         type: String
     },
 
@@ -28,37 +27,37 @@ const taskSchema = new mongoose.Schema({
         type: String
     },
 
-    postedby:{
+    postedby: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
         required: true
     },
 
-    techStack:[String],
+    techStack: [String],
 
-    approvedByAdmin:{
-        type:Boolean,
+    approvedByAdmin: {
+        type: Boolean,
         default: false
     },
-    
-    position:{
+
+    position: {
         type: String
     },
 
-    salaryRange:{
+    salaryRange: {
         currency: String,
         min: { type: Number, min: 0 },
         max: { type: Number, min: 0 }
-        
+
     },
     location: {
-        type: { 
+        type: {
             type: String,
             enum: ['Point'],
-            default:'Point'  
+            default: 'Point'
         },
         coordinates: []
-       },
+    },
 
     timeFrame: Number,
 
@@ -70,9 +69,9 @@ const taskSchema = new mongoose.Schema({
     }
 
 
-    
 
-},{ timestamps: true})
+
+}, { timestamps: true })
 
 
 taskSchema.index({ location: "2dsphere" })

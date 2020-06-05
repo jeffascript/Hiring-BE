@@ -2,7 +2,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from 'passport-local'
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import { Strategy as LinkedInStrategy } from 'passport-linkedin-oauth2'
-import {isEmpty} from 'lodash'
+import { isEmpty } from 'lodash'
 import GitHubStrategy from 'passport-github2'
 import { UserModel } from '../model';
 import dotenv from 'dotenv';
@@ -79,7 +79,7 @@ passport.use(new GitHubStrategy({
     callbackURL: "http://localhost:5500/api/auth/github/callback"
 }, async (accessToken, refreshToken, profile, done) => {
     try {
-        const userFromGithub = await UserModel.findOne({ email:profile.emails[0].value.trim(),githubId:profile.id.trim() })
+        const userFromGithub = await UserModel.findOne({ email: profile.emails[0].value.trim(), githubId: profile.id.trim() })
         if (isEmpty(userFromGithub)) {
             const createUserProfile = await UserModel.create({
                 username: profile.username,
