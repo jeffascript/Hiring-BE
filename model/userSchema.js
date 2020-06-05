@@ -35,14 +35,16 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      trim:true
     },
 
     firstname: {
       type: String,
+      trim:true
     },
     surname: {
       type: String,
-      required:true
+      trim:true
     },
     email: {
       type: String,
@@ -60,20 +62,24 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "developer",
       enum: ["company", "developer", "admin"],
+      trim:true
     },
 
     selectedTasks: [selectedTasks],
 
     location: {
       type: String,
+      trim:true
     },
 
     github: {
       type: String,
+      trim:true
     },
 
     linkedIn: {
       type: String,
+      trim:true
     },
     refreshtoken: String,
 
@@ -81,8 +87,22 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    linkedinId:String,
-    image: String
+    linkedinId:{
+      type: String,
+      trim:true
+    },
+    image:{
+      type: String,
+      trim:true
+    },
+    githubId:{
+      type: String,
+      trim:true
+    },
+    refreshtoken:{
+      type: String,
+      trim:true
+    }
   },
   {
     timestamps: true,
