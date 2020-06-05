@@ -13,19 +13,22 @@ const selectedTasks = new mongoose.Schema({
     type: Date
   },
 
+
   isTaskCompleted:{
+
     type: Boolean,
     default: false
   },
 
   submittedOnTime:{
     type: Boolean
-    // default: false
+  
   }
+                                      
+}, { timestamps: true })
 
 
 
-})
 
 
 
@@ -35,16 +38,16 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      trim:true
+      trim: true
     },
 
     firstname: {
       type: String,
-      trim:true
+      trim: true
     },
     surname: {
       type: String,
-      trim:true
+      trim: true
     },
     email: {
       type: String,
@@ -57,29 +60,29 @@ const userSchema = new mongoose.Schema(
         message: "Provided email is invalid",
       },
     },
-
+    selectedTasks: [selectedTasks],
     role: {
       type: String,
       default: "developer",
       enum: ["company", "developer", "admin"],
-      trim:true
+      trim: true
     },
 
     selectedTasks: [selectedTasks],
 
     location: {
       type: String,
-      trim:true
+      trim: true
     },
 
     github: {
       type: String,
-      trim:true
+      trim: true
     },
 
     linkedIn: {
       type: String,
-      trim:true
+      trim: true
     },
     refreshtoken: String,
 
@@ -87,21 +90,21 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    linkedinId:{
+    linkedinId: {
       type: String,
-      trim:true
+      trim: true
     },
-    image:{
+    image: {
       type: String,
-      trim:true
+      trim: true
     },
-    githubId:{
+    githubId: {
       type: String,
-      trim:true
+      trim: true
     },
-    refreshtoken:{
+    refreshtoken: {
       type: String,
-      trim:true
+      trim: true
     }
   },
   {

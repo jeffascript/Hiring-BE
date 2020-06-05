@@ -5,15 +5,14 @@ import mongoose from "mongoose"
 const attemptedBy = mongoose.Schema({
     userInfo: {
         type: mongoose.Schema.Types.ObjectId,
-        ref:"users",
+        ref: "users",
 
     },
 
     repo: String,
-    
+
     deliveryTime: {
         type: Date
-        // default: Date.now
     }
 
 })
@@ -38,7 +37,7 @@ const geoSchema = mongoose.Schema({
 
 const taskSchema = new mongoose.Schema({
 
-    taskTitle:{
+    taskTitle: {
         type: String
     },
 
@@ -46,30 +45,32 @@ const taskSchema = new mongoose.Schema({
         type: String
     },
 
-    postedby:{
+    postedby: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",
         required: true
     },
 
-    techStack:[String],
+    techStack: [String],
 
-    approvedByAdmin:{
-        type:Boolean,
+    approvedByAdmin: {
+        type: Boolean,
         default: false
     },
-    
-    position:{
+
+    position: {
         type: String
     },
 
-    salaryRange:{
+    salaryRange: {
         currency: String,
         min: { type: Number, min: 0 },
         max: { type: Number, min: 0 }
-        
+
     },
+
     geometry: geoSchema,
+
 
     timeFrame: Number,
 
@@ -83,9 +84,9 @@ const taskSchema = new mongoose.Schema({
     city: String
 
 
-    
 
-},{ timestamps: true})
+
+}, { timestamps: true })
 
 
 //  taskSchema.index({ geometry: "2dsphere" })
