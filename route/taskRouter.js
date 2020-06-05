@@ -8,6 +8,7 @@ import mongoose from "mongoose"
 const router = Router(); 
 
 
+
 router.post("/admin",  passport.authenticate("jwt"), onlyAdmin,getNewGeo, async(req , res)=>{
    try {
     const { username } = req.user
@@ -106,6 +107,51 @@ router.get("/developer", passport.authenticate("jwt"),onlyDeveloper, async(req,r
 
 
 
+
+router.put("/submission/:id", passport.authenticate("jwt"),onlyDeveloper, async(req,res)=>{
+
+    const taskIsValid = await TaskModel.findById(req.params.id)
+    if(!taskIsValid){
+        res.status(404).send({msg: " Task with id does not exist"})
+    }
+    
+    const { repo } = req.body
+
+    let submissionDetails = { repo, deliveryTime: Date.now(), userInfo: req.user._id}
+
+    const submitResult = await TaskModel.findByIdAndUpdate(req.params.id, {
+        $push:{
+            attemptedBy: submissionDetails
+        }
+    }, { new : true }).populate({path: "attemptedBy.userInfo", select: "username email firstname surname"})
+
+
+    // I need to check deadline, isTaskCompleted, & submittedOntime from User schema
+
+    let updateUserBody  =  { isTaskCompleted: true }
+    const newBody = updateUserBody
+
+    // const result = await User.updateOne({ "experiences._id": req.params.expId }, {
+    //     '$set': {
+    //         'experiences.$[]': req.body
+    //     }
+    // }) 
+
+    const newData = {};
+
+    for  ( const eachField in newBody){
+        newData["selectedTasks.$." + eachField] = newBody[ eachField ];
+    }
+
+        const updateUserDetails = await UserModel.updateOne({ _id: req.user._id,
+            "selectedTasks.taskId": req.params.id
+      }, 
+      { $set: newData }, {new: true}
+      )
+
+        res.send(submitResult.attemptedBy)
+
+});
 
 
 

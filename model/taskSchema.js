@@ -3,7 +3,7 @@ import mongoose from "mongoose"
  
 
 const attemptedBy = mongoose.Schema({
-    userId: {
+    userInfo: {
         type: mongoose.Schema.Types.ObjectId,
         ref:"users",
 
