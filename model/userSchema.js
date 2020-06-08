@@ -53,7 +53,7 @@ const userSchema = new mongoose.Schema(
                 message: "Provided email is invalid",
             },
         },
-        selectedTasks: [selectedTasks],
+
         role: {
             type: String,
             default: "developer",
