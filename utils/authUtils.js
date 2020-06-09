@@ -81,15 +81,15 @@ passport.use(new GitHubStrategy({
     callbackURL: "http://localhost:5500/api/auth/github/callback"
 }, async (accessToken, refreshToken, profile, done) => {
     try {
-
+   
         const userFromGithub = await UserModel.findOne({ githubId:profile.id.trim() })
 
         if (isEmpty(userFromGithub)) {
             const createUserProfile = await UserModel.create({
                 username: profile.username,
                 githubId: profile.id,
-                firstname: profile._json.name.split(" ")[0] || '',
-                surname: profile._json.name.split(" ")[1] || '',
+                firstname: profile._json.name ? profile._json.name.split(" ")[0] : '',
+                surname:  profile._json.name ? profile._json.name.split(" ")[1] : '',
                 image: profile.photos[0].value,
                 // email: profile.emails[0].value || "",
                 isVerified: true,
