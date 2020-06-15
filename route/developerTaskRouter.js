@@ -12,8 +12,7 @@ router.post('/select/:taskId', passport.authenticate('jwt'), async (req, res) =>
         let today = new Date()
         let dateInMilsc = today.setDate(new Date().getDate() + selectedTask.timeFrame)
         let deadline = new Date(dateInMilsc)
-        console.log(deadline)
-        let task = {
+         let task = {
             taskId: req.params.taskId,
             deadline
         }
@@ -25,6 +24,7 @@ router.post('/select/:taskId', passport.authenticate('jwt'), async (req, res) =>
         }, {
             new: true
         }).populate({ path: "selectedTasks.taskId", model: "tasks" });
+        console.log(addTask,"add")
 
         res.send(addTask.selectedTasks)
 
@@ -44,7 +44,9 @@ router.get('/:taskId', async (req, res) => {
 
 router.get('/', passport.authenticate('jwt'), async (req, res) => {
     try {
+        console.log(req)
         const selectedTask = await UserModel.findById(req.user._id).populate({ path: "selectedTasks.taskId", model: "tasks" });
+        console.log(selectedTask,"task")
         res.send(selectedTask)
     } catch (error) {
         res.status(500).send(error)

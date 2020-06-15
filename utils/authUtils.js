@@ -26,12 +26,23 @@ passport.use(new LocalStrategy(UserModel.authenticate()))
 /**
  * Jwt strategy
 */
-passport.use(new JwtStrategy({ jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), secretOrKey: process.env.JWT_SECRET }, (jwtPayload, next) => {
-    UserModel.findById(jwtPayload._id, (err, user) => {
-        if (err) return next(err, null)
-        else if (user) return next(null, user)
-        else return next(null, false)
-    })
+passport.use(new JwtStrategy({ jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), secretOrKey: process.env.JWT_SECRET }, async (jwtPayload, next) => {
+    try{
+        const user = await UserModel.findById(jwtPayload._id).populate({path:"selectedTasks.taskId",select:"taskTitle techStack taskIsOpen city"})
+        if (user)
+            next(null, user)
+        else 
+            next(null, false)
+        }
+        catch(e) {
+             next(e, null)
+        }
+    
+    // , (err, user) => {
+    //     if (err) return next(err, null)
+    //     else if (user) return next(null, user)
+    //     else return next(null, false)
+    // })
 }))
 
 /** 
