@@ -5,11 +5,11 @@ import {onlyAdmin} from '../middleware'
 
 const router = Router()
 
-router.get("/:username",passport.authenticate('jwt'), async (req, res) => {
+router.get("/",passport.authenticate('jwt'), async (req, res) => {
     try {
-        const requestedUser = await UserModel.findOne({ username: req.params.username }) || {}
+        const requestedUser = await UserModel.findOne({ username: req.user.username }) || {}
         if (!Object.keys(requestedUser).length)
-            throw `${req.params.username} not found`
+            throw `${req.user.username} not found`
         res.send(requestedUser)
     } catch (e) {
         res.status(500).send(e)
@@ -27,9 +27,9 @@ router.get("/",passport.authenticate('jwt'),onlyAdmin, async (req, res) => {
     }
 })
 
-router.put('/:username', passport.authenticate('jwt'), async (req, res) => {
+router.put('/', passport.authenticate('jwt'), async (req, res) => {
     try {
-        if (req.params.username !== req.user.username)
+        if (!req.user.username)
             throw `unauthorized to edit ***** ${req.params.username} ***** profile`
         delete req.body._id;
         const userProfile = await UserModel.findOneAndUpdate({ username: req.user.username }, {
@@ -44,10 +44,10 @@ router.put('/:username', passport.authenticate('jwt'), async (req, res) => {
     }
 });
 
-router.delete('/:username', passport.authenticate('jwt'), async (req, res) => {
+router.delete('/', passport.authenticate('jwt'), async (req, res) => {
     try {
-        if (req.params.username !== req.user.username)
-            throw `unauthorized to edit ***** ${req.params.username} ***** profile`
+        if (!req.user.username)
+            throw `unauthorized to edit ***** ${req.user.username} ***** profile`
        await user.findOneAndDelete({ username: req.user.username }, { new: true });
         res.send('deleted')
     } catch (error) {
