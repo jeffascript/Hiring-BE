@@ -109,7 +109,7 @@ router.get('/linkedin/callback',
 
 
   router.get('/github',
-  passport.authenticate('github', { scope: [ 'user' ] }));
+  passport.authenticate('github'));
 
 router.get('/github/callback', 
   passport.authenticate('github', { failureRedirect:`${process.env.FRONT_BASE_URL}/login` }),
