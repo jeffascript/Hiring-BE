@@ -28,7 +28,7 @@ passport.use(new LocalStrategy(UserModel.authenticate()))
 */
 passport.use(new JwtStrategy({ jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), secretOrKey: process.env.JWT_SECRET }, async (jwtPayload, next) => {
     try{
-        const user = await UserModel.findById(jwtPayload._id).populate({path:"selectedTasks.taskId",select:"taskTitle techStack taskIsOpen city"})
+        const user = await UserModel.findById(jwtPayload._id).populate({path:"selectedTasks.taskId",select:"taskTitle techStack taskIsOpen city createdAt"})
         if (user)
             next(null, user)
         else 
