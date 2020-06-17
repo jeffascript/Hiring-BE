@@ -1,16 +1,21 @@
 import express from "express"
 const server = express()
 import listEndPoints from "express-list-endpoints"
+import compression from 'compression'
 import passport from 'passport'
+import { httpLogger } from './middleware'
+import { logger } from './utils'
 import './utils/authUtils'
 import dotenv from "dotenv"
 dotenv.config()
 import cors from "cors"
-import  connectMongoose  from "./db/mongooseConnection"
-import { authRouter,userRouter,taskRouter, developerTaskRouter } from './route'
+import connectMongoose from "./db/mongooseConnection"
+import { authRouter, userRouter, taskRouter, developerTaskRouter } from './route'
 
 
 server.use(cors());
+server.use(compression()); // for performance
+server.use(httpLogger);
 server.use(passport.initialize())
 server.use(express.json())
 
@@ -28,7 +33,7 @@ server.use("/api/task", taskRouter)
 console.log(listEndPoints(server))
 
 server.listen(PORT, () => {
-  console.log(`We are live on ${PORT}`);
+  logger.info(`We are live on ${PORT}`);
   connectMongoose();
 })
 
