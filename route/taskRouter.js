@@ -336,6 +336,10 @@ router.delete(
         res.status(404).send({ msg: "Not Found" });
       }
 
+      if (toBeDeleted.attemptedBy.length > 0) {
+        return res.status(405).send({ err: "method not allowed" });
+      }
+
       await TaskModel.findByIdAndDelete(req.params.id);
       res.send({ msg: "successfully Deleted" });
     } catch (err) {
@@ -346,3 +350,11 @@ router.delete(
 );
 
 export default router;
+
+//  let u = Object.keys(JSON.parse(JSON.stringify(toBeDeleted)));
+//   let u = [];
+//   u.push(toBeDeleted);
+//   console.log(u);
+//   const filt = JSON.parse(JSON.stringify(toBeDeleted));
+
+//   let z = toBeDeleted.attemptedBy.filter((a) => a.length > 0);
