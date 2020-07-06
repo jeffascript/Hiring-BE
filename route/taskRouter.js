@@ -258,7 +258,8 @@ router.put(
       newData["selectedTasks.$." + eachField] = newBody[eachField];
     }
 
-    const updateUserDetails = await UserModel.updateOne(
+    // updateUserDetails -->
+    await UserModel.updateOne(
       { _id: req.user._id, "selectedTasks.taskId": req.params.id },
       { $set: newData },
       { new: true }
