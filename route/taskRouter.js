@@ -73,13 +73,15 @@ router.get(
 
 router.get(
   "/developer/query",
+
   // passport.authenticate("jwt"),
   // onlyDeveloper,
+
   async (req, res) => {
     try {
       const taskTotal = await TaskModel.countDocuments();
 
-      const query = req.query;
+      let query = req.query;
       // const adminAllowedIt = await TaskModel.find({
       //     approvedByAdmin: false,
       // });
@@ -126,7 +128,19 @@ router.get(
         });
       }
 
-      if (query.lat && query.lng) {
+      if ((query.lat && query.lng) || query.city) {
+        let cityResp;
+        if (query.city) {
+          cityResp = await getGeo(query.city);
+          // console.log(cityResp);
+          // req.query.lat = cityResp.lat;
+          // req.query.lng = cityResp.lng;
+          // console.log(req.query, "1");
+          // return cityResp;
+        }
+
+        console.log(parseFloat(req.query.lat || cityResp.lat), "now");
+
         const tasksWithNearDistance = await TaskModel
           //  .find(
           //     { point :
@@ -146,8 +160,8 @@ router.get(
             near: {
               type: "Point",
               coordinates: [
-                parseFloat(req.query.lat),
-                parseFloat(req.query.lng),
+                parseFloat(req.query.lat || cityResp.lat),
+                parseFloat(req.query.lng || cityResp.lng),
               ],
             },
             maxDistance: 1000000, //1,000km

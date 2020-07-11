@@ -22,38 +22,41 @@ export const getNewGeo = async (req, res, next) => {
   }
 };
 
-// export const getGeo = async (city) => {
-//     try {
-//         const response = await axios.get(
-//             `https://api.opencagedata.com/geocode/v1/json?q=${city}&key=${process.env.OCD_API_KEY}&language=en&pretty=1`
-//         );
+export const getGeo = async (city) => {
+  try {
+    const response = await axios.get(
+      `https://api.opencagedata.com/geocode/v1/json?q=${city}&key=${process.env.OCD_API_KEY}&language=en&pretty=1`
+    );
 
-//         console.log(response.data.results[0].geometry);
-//         return await response.data.results[0].geometry;
-//     } catch (error) {
-//         console.log(error);
-//     }
-// };
-
-export const getGeo = async (req, res, next) => {
-  if (req.query.city) {
-    let query = req.query;
-    let city = query.city;
-
-    try {
-      const response = await axios.get(
-        `https://api.opencagedata.com/geocode/v1/json?q=${city}&key=${process.env.OCD_API_KEY}&language=en&pretty=1`
-      );
-
-      console.log(response.data.results[0].geometry);
-      const resp = await response.data.results[0].geometry;
-      req.query.city = Object.values(resp);
-      next();
-    } catch (error) {
-      console.log(error);
-    }
+    // console.log(response.data.results[0].geometry);
+    return await response.data.results[0].geometry;
+  } catch (error) {
+    console.log(error);
   }
 };
+
+// export const getGeo = async (req, res, next) => {
+//   if (req.query.city) {
+//     let query = req.query;
+//     let city = query.city;
+
+//     try {
+//       const response = await axios.get(
+//         `https://api.opencagedata.com/geocode/v1/json?q=${city}&key=${process.env.OCD_API_KEY}&language=en&pretty=1`
+//       );
+
+//       console.log(response.data.results[0].geometry);
+//       const resp = await response.data.results[0].geometry;
+//       req.query.lat = resp.lat;
+//       req.query.lng = resp.lng;
+//       // req.query.city = Object.values(resp);
+
+//       next();
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   }
+// };
 
 export const getCity = async (latitude, longitude) => {
   try {

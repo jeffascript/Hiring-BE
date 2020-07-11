@@ -36,12 +36,3 @@ server.listen(PORT, () => {
   logger.info(`We are live on ${PORT}`);
   connectMongoose();
 });
-
-// import { getGeo } from "./middleware";
-
-// async function findCityGeo() {
-//   let ge = await getGeo("Berlin");
-//   return ge;
-// }
-
-//findCityGeo();
