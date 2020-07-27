@@ -30,6 +30,9 @@ server.use("/api/user", userRouter);
 server.use("/api/developertask", developerTaskRouter);
 server.use("/api/task", taskRouter);
 
+server.get("/", (req, res) => {
+  res.send("App is Alive!");
+});
 console.log(listEndPoints(server));
 
 server.listen(PORT, () => {
