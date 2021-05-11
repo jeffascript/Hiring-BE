@@ -22,7 +22,7 @@
     "express-list-endpoints": "^4.0.1",
     "find-or-create": "^2.0.0",
     "jsonwebtoken": "^8.5.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "mongoose": "^5.9.16",
     "morgan": "^1.10.0",
     "passport": "^0.4.1",
